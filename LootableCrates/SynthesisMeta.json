@@ -1,0 +1,8 @@
+{
+  "Nickname": "LootableCrates",
+  "Visibility": "Visible",
+  "OneLineDescription": "Synthesis Patcher that changes static crates into lootable containers.",
+  "LongDescription": "Synthesis Patcher that changes static crates into lootable containers.\nCompletely standalone, no plugins required.\n",
+  "PreferredAutoVersioning": "Default",
+  "RequiredMods": []
+}
