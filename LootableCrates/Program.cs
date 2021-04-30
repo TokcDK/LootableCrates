@@ -105,15 +105,11 @@ namespace LootableStuff
             var container =
                 state.PatchMod.Containers.AddNew(placedBase.EditorID + $"{containerType.ToString()}" + "Container");
             container.ObjectBounds = placedBase.ObjectBounds.DeepCopy();
-            if (placedBase.Model != null)
+            var mask = new Model.TranslationMask(true)
             {
-                var alternateTextures = placedBase.Model.AlternateTextures?.Select(x => x.DeepCopy());
-                container.Model = new Model
-                {
-                    File = placedBase.Model!.File,
-                    AlternateTextures = alternateTextures?.ToExtendedList()
-                };
-            }
+                Data = false
+            };
+            container.Model = placedBase.Model?.DeepCopy(mask);
 
             container.Flags |= Container.Flag.Respawns;
             /*if (placedBase.EditorID?.ToLower().Contains("barrel") ?? false)
