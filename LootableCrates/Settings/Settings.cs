@@ -15,8 +15,8 @@ namespace LootableCrates.Settings
                 {
                     new()
                     {
-                        Item = Skyrim.LeveledItem.LItemClothesAll,
-                        Count = 3
+                        Item = Skyrim.LeveledItem.LItemMiscVendorClothing75,
+                        Count = 4
                     }
                 }
             },
@@ -38,12 +38,12 @@ namespace LootableCrates.Settings
                     new()
                     {
                         Item = Skyrim.LeveledItem.LItemFoodFishList,
-                        Count = 3
+                        Count = 1
                     },
                     new()
                     {
                         Item = Skyrim.LeveledItem.LItemFoodSaltSmall,
-                        Count = 3
+                        Count = 1
                     }
                 }
             },
@@ -54,7 +54,7 @@ namespace LootableCrates.Settings
                     new()
                     {
                         Item = Skyrim.LeveledItem.LItemMiscVendorMiscItems75,
-                        Count = 7
+                        Count = 6
                     }
                 }
             },
@@ -142,6 +142,50 @@ namespace LootableCrates.Settings
                     {
                         Item = Skyrim.LeveledItem.LItemOreSilver,
                         Count = 5
+                    }
+                }
+            },
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemBarrelIngredientsCommonSame100,
+                        Count = 10
+                    }
+                }
+            },
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemBarrelIngredientsUncommonSame100,
+                        Count = 5
+                    }
+                }
+            },
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemBarrelIngredientsUncommonSame100,
+                        Count = 5
+                    }
+                }
+            },
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemBookClutter,
+                        Count = 3
                     }
                 }
             },
