@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Mutagen.Bethesda.FormKeys.SkyrimSE;
-using Mutagen.Bethesda.Synthesis.Settings;
 
 namespace LootableCrates.Settings
 {
@@ -8,47 +7,147 @@ namespace LootableCrates.Settings
     {
         public bool PatchSnowStatics { get; set; } = false;
 
-        public List<CrateLoot> CrateLoot { get; set; } = new();
-        // {
-        //     new CrateLoot()
-        //     {
-        //         ItemEntries = new List<ItemEntry>()
-        //         {
-        //             new ItemEntry()
-        //             {
-        //                 Count = 1,
-        //                 Item = Skyrim.LeveledItem.LItemFoodChild
-        //             }
-        //         }
-        //     },
-        //     new CrateLoot()
-        //     {
-        //         ItemEntries = new List<ItemEntry>()
-        //         {
-        //             new ItemEntry()
-        //             {
-        //                 Count = 1,
-        //                 Item = Skyrim.LeveledItem.LItemFoodChild
-        //             }
-        //         }
-        //     }
-        // };
-        [SynthesisOrder]
-        [SynthesisTooltip("ssd")]
-        public List<int> Ints { get; set; } = new ()
-        #region Defaults
+        public List<CrateLoot> Loot { get; set; } = new()
         {
-            1, 
-            2, 
-            3, 
-            4, 
-            5, 
-            6, 
-            7, 
-            8, 
-            9, 
-            10
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemClothesAll,
+                        Count = 3
+                    }
+                }
+            },
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemBarrelFoodSameSmall,
+                        Count = 4
+                    }
+                }
+            },
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemFoodFishList,
+                        Count = 3
+                    },
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemFoodSaltSmall,
+                        Count = 3
+                    }
+                }
+            },
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemMiscVendorMiscItems75,
+                        Count = 7
+                    }
+                }
+            },
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LootBanditWeapon50,
+                        Count = 4
+                    }
+                }
+            },
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LootBanditArmor50,
+                        Count = 4
+                    }
+                }
+            },
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemJewelryCirclet25,
+                        Count = 2
+                    },
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemJewelryRing25,
+                        Count = 4
+                    }
+                }
+            },
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemJewelryNecklace25,
+                        Count = 3
+                    },
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemJewelryRing25,
+                        Count = 4
+                    }
+                }
+            },
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemPotionAll,
+                        Count = 4
+                    }
+                }
+            },
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemOreIron,
+                        Count = 7
+                    }
+                }
+            },
+            new CrateLoot
+            {
+                ItemEntries = new List<ItemEntry>
+                {
+                    new()
+                    {
+                        Item = Skyrim.LeveledItem.LItemOreSilver,
+                        Count = 5
+                    }
+                }
+            },
+            new CrateLoot(),
+            new CrateLoot(),
+            new CrateLoot()
         };
-        #endregion
     }
 }

@@ -70,7 +70,7 @@ namespace LootableCrates
             var placedBase = placedBaseLink.Resolve(state.LinkCache);
             List<Container> containers = new();
             var count = 0;
-            foreach (var loot in _settings.Value.CrateLoot)
+            foreach (var loot in _settings.Value.Loot)
             {
                 var container =
                     state.PatchMod.Containers.AddNew(placedBase.EditorID + "Container" + count);
