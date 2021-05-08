@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
-    <RootNamespace>LootableFirewoodPiles</RootNamespace>
+    <RootNamespace>LootableCrates</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
