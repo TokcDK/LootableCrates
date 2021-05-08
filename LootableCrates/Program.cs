@@ -108,6 +108,12 @@ namespace LootableCrates
                 if (found.Count == 0) return;
                 var index = Random.Next(0, found.Count);
                 placedCopy.Base.SetTo(found[index]);
+                var parent = (ICellGetter?) placed.Parent?.Record;
+                if(parent?.Ownership?.Owner == null) return;
+                placedCopy.Ownership ??= new Ownership
+                {
+                    Owner = parent.Ownership.Owner.AsNullable()
+                };
             }
 
             Dictionary<IFormLinkGetter<ISkyrimMajorRecordGetter>,List<Container> > crateContainers = new();
