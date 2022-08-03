@@ -135,23 +135,26 @@ namespace LootableCrates
 
             Dictionary<IFormLinkGetter<ISkyrimMajorRecordGetter>, List<Container>> crateContainers = new();
 
-            Console.WriteLine($"Add new crate statics...");
-            foreach (var staticGetter in state.LoadOrder.PriorityOrder.Static().WinningOverrides())
+            if (_settings.Value.CanTryToAddExtraStaticsFromMods)
             {
-                if (staticGetter == null) continue;
-                if (string.IsNullOrWhiteSpace(staticGetter.EditorID)) continue;
-                if (Crates.Contains(staticGetter)) continue;
-                if (SnowCrates.Contains(staticGetter)) continue;
-                if (!staticGetter.EditorID.ToLowerInvariant().Contains("cratesmall")) continue;
-
-                if(staticGetter.EditorID.ToLowerInvariant().EndsWith("sn") 
-                    || staticGetter.EditorID.ToLowerInvariant().EndsWith("ash")
-                    || staticGetter.EditorID.ToLowerInvariant().Contains("snow")
-                    )
+                Console.WriteLine($"Add new crate statics...");
+                foreach (var staticGetter in state.LoadOrder.PriorityOrder.Static().WinningOverrides())
                 {
-                    SnowCrates.Add(new FormLink<IStaticGetter>(staticGetter));
+                    if (staticGetter == null) continue;
+                    if (string.IsNullOrWhiteSpace(staticGetter.EditorID)) continue;
+                    if (Crates.Contains(staticGetter)) continue;
+                    if (SnowCrates.Contains(staticGetter)) continue;
+                    if (!staticGetter.EditorID.ToLowerInvariant().Contains("cratesmall")) continue;
+
+                    if (staticGetter.EditorID.ToLowerInvariant().EndsWith("sn")
+                        || staticGetter.EditorID.ToLowerInvariant().EndsWith("ash")
+                        || staticGetter.EditorID.ToLowerInvariant().Contains("snow")
+                        )
+                    {
+                        SnowCrates.Add(new FormLink<IStaticGetter>(staticGetter));
+                    }
+                    else Crates.Add(new FormLink<IStaticGetter>(staticGetter));
                 }
-                else Crates.Add(new FormLink<IStaticGetter>(staticGetter));
             }
 
             Console.WriteLine($"Add containers...");
