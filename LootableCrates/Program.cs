@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Mutagen.Bethesda;
+﻿using Mutagen.Bethesda;
 using Mutagen.Bethesda.FormKeys.SkyrimSE;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Plugins.Cache;
@@ -10,6 +6,10 @@ using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Strings;
 using Mutagen.Bethesda.Synthesis;
 using Noggog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LootableCrates
 {
@@ -58,7 +58,7 @@ namespace LootableCrates
             Skyrim.Static.CrateSmallLong01WeatheredSnow,
             Skyrim.Static.CrateSmallLong03WeatheredSnow,
         };
-        
+
         public static async Task<int> Main(string[] args)
         {
             return await SynthesisPipeline.Instance.AddPatch<ISkyrimMod, ISkyrimModGetter>(RunPatch)
@@ -108,7 +108,7 @@ namespace LootableCrates
                 }));
                 containers.Add(container);
             }
-            
+
             return containers;
         }
 
@@ -120,15 +120,12 @@ namespace LootableCrates
                 if (found.Count == 0) return;
                 var index = Random.Next(0, found.Count);
                 placedCopy.Base.SetTo(found[index]);
-                var parent = (ICellGetter?) placed.Parent?.Record;
-                if(parent?.Ownership?.Owner == null) return;
-                placedCopy.Ownership ??= new Ownership
-                {
-                    Owner = parent.Ownership.Owner.AsNullable()
-                };
+                var parent = (ICellGetter?)placed.Parent?.Record;
+                if (parent?.Owner == null) return;
+                placedCopy.Owner = parent.Owner.AsNullable();
             }
 
-            Dictionary<IFormLinkGetter<ISkyrimMajorRecordGetter>,List<Container> > crateContainers = new();
+            Dictionary<IFormLinkGetter<ISkyrimMajorRecordGetter>, List<Container>> crateContainers = new();
             Crates.Select(x =>
             {
                 List<Container> toAdd = AddContainers(state, x);
@@ -143,7 +140,7 @@ namespace LootableCrates
                     return (x, toAdd);
                 }).ForEach(tuple => crateContainers.Add(tuple.x, tuple.toAdd));
             }
-            
+
             foreach (var placed in state.LoadOrder.PriorityOrder.PlacedObject()
                 .WinningContextOverrides(state.LinkCache))
             {
