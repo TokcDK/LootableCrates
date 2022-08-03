@@ -151,7 +151,7 @@ namespace LootableCrates
                         || staticGetter.EditorID.ToLowerInvariant().Contains("snow")
                         )
                     {
-                        SnowCrates.Add(new FormLink<IStaticGetter>(staticGetter));
+                        if(_settings.Value.PatchSnowStatics) SnowCrates.Add(new FormLink<IStaticGetter>(staticGetter));
                     }
                     else Crates.Add(new FormLink<IStaticGetter>(staticGetter));
                 }
