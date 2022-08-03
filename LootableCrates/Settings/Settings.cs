@@ -1,12 +1,24 @@
 ﻿using System.Collections.Generic;
 using Mutagen.Bethesda.FormKeys.SkyrimSE;
+using Mutagen.Bethesda.Synthesis.Settings;
 
 namespace LootableCrates.Settings
 {
     public class Settings
     {
+        [SynthesisSettingName("Patch snow statics")]
+        [SynthesisTooltip("Make snow statics as containers")]
+        [SynthesisDescription("Make snow statics as containers")]
         public bool PatchSnowStatics { get; set; } = false;
 
+        [SynthesisSettingName("Try add extra crate statics from mods")]
+        [SynthesisTooltip("Will try to add extra crate statics from mods editor id of which are contains 'cratesmall' keyword")]
+        [SynthesisDescription("Will try to add extra crate statics from mods editor id of which are contains 'cratesmall' keyword")]
+        public bool CanTryToAddExtraStaticsFromMods { get; set; } = true;
+
+        [SynthesisSettingName("Loot for containers")]
+        [SynthesisTooltip("Loot which will be added into crates")]
+        [SynthesisDescription("Loot which will be added into crates")]
         public List<CrateLoot> Loot { get; set; } = new()
         {
             new CrateLoot

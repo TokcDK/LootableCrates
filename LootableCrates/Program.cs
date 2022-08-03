@@ -134,6 +134,27 @@ namespace LootableCrates
             }
 
             Dictionary<IFormLinkGetter<ISkyrimMajorRecordGetter>, List<Container>> crateContainers = new();
+
+            Console.WriteLine($"Add new crate statics...");
+            foreach (var staticGetter in state.LoadOrder.PriorityOrder.Static().WinningOverrides())
+            {
+                if (staticGetter == null) continue;
+                if (string.IsNullOrWhiteSpace(staticGetter.EditorID)) continue;
+                if (Crates.Contains(staticGetter)) continue;
+                if (SnowCrates.Contains(staticGetter)) continue;
+                if (!staticGetter.EditorID.ToLowerInvariant().Contains("cratesmall")) continue;
+
+                if(staticGetter.EditorID.ToLowerInvariant().EndsWith("sn") 
+                    || staticGetter.EditorID.ToLowerInvariant().EndsWith("ash")
+                    || staticGetter.EditorID.ToLowerInvariant().Contains("snow")
+                    )
+                {
+                    SnowCrates.Add(new FormLink<IStaticGetter>(staticGetter));
+                }
+                else Crates.Add(new FormLink<IStaticGetter>(staticGetter));
+            }
+
+            Console.WriteLine($"Add containers...");
             Crates.Select(x =>
             {
                 List<Container> toAdd = AddContainers(state, x);
@@ -142,6 +163,7 @@ namespace LootableCrates
 
             if (_settings.Value.PatchSnowStatics)
             {
+                Console.WriteLine($"Add snow containers...");
                 SnowCrates.Select(x =>
                 {
                     List<Container> toAdd = AddContainers(state, x);
@@ -149,6 +171,7 @@ namespace LootableCrates
                 }).ForEach(tuple => crateContainers.Add(tuple.x, tuple.toAdd));
             }
 
+            Console.WriteLine($"Replace statics by containers...");
             foreach (var placed in state.LoadOrder.PriorityOrder.PlacedObject()
                 .WinningContextOverrides(state.LinkCache))
             {
