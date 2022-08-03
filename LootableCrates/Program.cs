@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -85,7 +85,16 @@ namespace LootableCrates
                 };
                 container.Model = placedBase.Model?.DeepCopy(mask);
                 container.Flags |= Container.Flag.Respawns;
-                container.Name = new TranslatedString("Crate", Language.English);
+                container.Name = new TranslatedString(Language.English, new Dictionary<Language, string>
+                {
+                    { Language.English, "Crate" },
+                    //{ Language.French, "Crate" },
+                    { Language.German, "Kiste" },
+                    { Language.Italian, "Cassa" },
+                    { Language.Russian, "Ящик" },
+                    { Language.Chinese, "箱子" },
+                    { Language.Japanese, "クレート" },
+                });
                 container.OpenSound = Skyrim.SoundDescriptor.DRScCrateOpenSD.AsNullable();
                 container.CloseSound = Skyrim.SoundDescriptor.DRScCrateCloseSD.AsNullable();
                 container.Items = new ExtendedList<ContainerEntry>();
