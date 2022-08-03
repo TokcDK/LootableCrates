@@ -40,7 +40,9 @@ namespace LootableCrates
             Skyrim.Static.CrateSmall01EECo,
             Skyrim.Static.CrateSmall03EECo,
             Skyrim.Static.CrateSmallLong01EECo,
-            Skyrim.Static.CrateSmallLong04EECo
+            Skyrim.Static.CrateSmallLong04EECo,
+            Dragonborn.Static.DLC2DarkElfCrate01,
+            Dragonborn.Static.DLC2DarkElfCrate02,
         };
 
         private static readonly HashSet<FormLink<IStaticGetter>> SnowCrates = new()
@@ -57,6 +59,12 @@ namespace LootableCrates
             Skyrim.Static.CrateSmallLong02WeatheredLight_SN,
             Skyrim.Static.CrateSmallLong01WeatheredSnow,
             Skyrim.Static.CrateSmallLong03WeatheredSnow,
+            Dragonborn.Static.CrateSmallLong03WeatheredLightSN,
+            Dragonborn.Static.DLC2CrateSmall01Weathered_LightAsh,
+            Dragonborn.Static.DLC2CrateSmall02Weathered_LightAsh,
+            Dragonborn.Static.DLC2CrateSmall03WeatheredLightAsh,
+            Dragonborn.Static.DLC2CrateSmall04WeatheredLight_Ash,
+            Dragonborn.Static.DLC2HandCartCrate_LightSN,
         };
 
         public static async Task<int> Main(string[] args)
