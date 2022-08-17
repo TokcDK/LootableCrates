@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Mutagen.Bethesda;
+﻿using Mutagen.Bethesda;
 using Mutagen.Bethesda.FormKeys.SkyrimSE;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Plugins.Cache;
@@ -10,6 +6,10 @@ using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Strings;
 using Mutagen.Bethesda.Synthesis;
 using Noggog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LootableCrates
 {
@@ -40,7 +40,9 @@ namespace LootableCrates
             Skyrim.Static.CrateSmall01EECo,
             Skyrim.Static.CrateSmall03EECo,
             Skyrim.Static.CrateSmallLong01EECo,
-            Skyrim.Static.CrateSmallLong04EECo
+            Skyrim.Static.CrateSmallLong04EECo,
+            Dragonborn.Static.DLC2DarkElfCrate01,
+            Dragonborn.Static.DLC2DarkElfCrate02,
         };
 
         private static readonly HashSet<FormLink<IStaticGetter>> SnowCrates = new()
@@ -57,8 +59,14 @@ namespace LootableCrates
             Skyrim.Static.CrateSmallLong02WeatheredLight_SN,
             Skyrim.Static.CrateSmallLong01WeatheredSnow,
             Skyrim.Static.CrateSmallLong03WeatheredSnow,
+            Dragonborn.Static.CrateSmallLong03WeatheredLightSN,
+            Dragonborn.Static.DLC2CrateSmall01Weathered_LightAsh,
+            Dragonborn.Static.DLC2CrateSmall02Weathered_LightAsh,
+            Dragonborn.Static.DLC2CrateSmall03WeatheredLightAsh,
+            Dragonborn.Static.DLC2CrateSmall04WeatheredLight_Ash,
+            Dragonborn.Static.DLC2HandCartCrate_LightSN,
         };
-        
+
         public static async Task<int> Main(string[] args)
         {
             return await SynthesisPipeline.Instance.AddPatch<ISkyrimMod, ISkyrimModGetter>(RunPatch)
@@ -85,7 +93,16 @@ namespace LootableCrates
                 };
                 container.Model = placedBase.Model?.DeepCopy(mask);
                 container.Flags |= Container.Flag.Respawns;
-                container.Name = new TranslatedString("Crate", Language.English);
+                container.Name = new TranslatedString(Language.English, new Dictionary<Language, string>
+                {
+                    { Language.English, "Crate" },
+                    //{ Language.French, "Crate" },
+                    { Language.German, "Kiste" },
+                    { Language.Italian, "Cassa" },
+                    { Language.Russian, "Ящик" },
+                    { Language.Chinese, "箱子" },
+                    { Language.Japanese, "クレート" },
+                });
                 container.OpenSound = Skyrim.SoundDescriptor.DRScCrateOpenSD.AsNullable();
                 container.CloseSound = Skyrim.SoundDescriptor.DRScCrateCloseSD.AsNullable();
                 container.Items = new ExtendedList<ContainerEntry>();
@@ -99,7 +116,7 @@ namespace LootableCrates
                 }));
                 containers.Add(container);
             }
-            
+
             return containers;
         }
 
@@ -111,15 +128,36 @@ namespace LootableCrates
                 if (found.Count == 0) return;
                 var index = Random.Next(0, found.Count);
                 placedCopy.Base.SetTo(found[index]);
-                var parent = (ICellGetter?) placed.Parent?.Record;
-                if(parent?.Ownership?.Owner == null) return;
-                placedCopy.Ownership ??= new Ownership
-                {
-                    Owner = parent.Ownership.Owner.AsNullable()
-                };
+                var parent = (ICellGetter?)placed.Parent?.Record;
+                if (parent?.Owner == null) return;
+                placedCopy.Owner = parent.Owner.AsNullable();
             }
 
-            Dictionary<IFormLinkGetter<ISkyrimMajorRecordGetter>,List<Container> > crateContainers = new();
+            Dictionary<IFormLinkGetter<ISkyrimMajorRecordGetter>, List<Container>> crateContainers = new();
+
+            if (_settings.Value.CanTryToAddExtraStaticsFromMods)
+            {
+                Console.WriteLine($"Add new crate statics...");
+                foreach (var staticGetter in state.LoadOrder.PriorityOrder.Static().WinningOverrides())
+                {
+                    if (staticGetter == null) continue;
+                    if (string.IsNullOrWhiteSpace(staticGetter.EditorID)) continue;
+                    if (Crates.Contains(staticGetter)) continue;
+                    if (SnowCrates.Contains(staticGetter)) continue;
+                    if (!staticGetter.EditorID.ToLowerInvariant().Contains("cratesmall")) continue;
+
+                    if (staticGetter.EditorID.ToLowerInvariant().EndsWith("sn")
+                        || staticGetter.EditorID.ToLowerInvariant().EndsWith("ash")
+                        || staticGetter.EditorID.ToLowerInvariant().Contains("snow")
+                        )
+                    {
+                        if(_settings.Value.PatchSnowStatics) SnowCrates.Add(new FormLink<IStaticGetter>(staticGetter));
+                    }
+                    else Crates.Add(new FormLink<IStaticGetter>(staticGetter));
+                }
+            }
+
+            Console.WriteLine($"Add containers...");
             Crates.Select(x =>
             {
                 List<Container> toAdd = AddContainers(state, x);
@@ -128,13 +166,15 @@ namespace LootableCrates
 
             if (_settings.Value.PatchSnowStatics)
             {
+                Console.WriteLine($"Add snow containers...");
                 SnowCrates.Select(x =>
                 {
                     List<Container> toAdd = AddContainers(state, x);
                     return (x, toAdd);
                 }).ForEach(tuple => crateContainers.Add(tuple.x, tuple.toAdd));
             }
-            
+
+            Console.WriteLine($"Replace statics by containers...");
             foreach (var placed in state.LoadOrder.PriorityOrder.PlacedObject()
                 .WinningContextOverrides(state.LinkCache))
             {
